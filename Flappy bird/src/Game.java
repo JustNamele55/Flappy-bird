@@ -14,11 +14,8 @@ public class Game extends JFrame implements KeyListener, ActionListener {
     private GamePanel gamePanel;
     private Ground ground;
     private List<Pipes> pipes;
-    private final int pipeSpacing = 500;
-    private final int pipeWidth = 80;
-    private final int pipeSpeed = 4;
     private boolean isSpacePressed = false;
-    private final int gapHeight = 125;
+    private int score = 0;
     public Game() {
         bird = new Bird(100, 300);
         gameState = GameState.MENU;
@@ -71,11 +68,15 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             if (pipe.getX() + pipe.getWidth() < 0) {
                 pipes.remove(i); // Remove off-screen pipes
                 generatePipe(1600);
+                score++;
             }
         }
     }
     private void generatePipe(int x) {
         int gapY = new Random().nextInt(300) + 50; //Gap position
+        int gapHeight = 125;
+        int pipeSpeed = 4;
+        int pipeWidth = 80;
         pipes.add(new Pipes(x, gapY, gapHeight, pipeWidth, 600, pipeSpeed));
     }
     private void generatePipes() {
@@ -84,6 +85,7 @@ public class Game extends JFrame implements KeyListener, ActionListener {
             for (int i = 0; i < 3; i++) {
                 int gapY = new Random().nextInt(300) + 50; //Gap position
                 generatePipe(x);
+                int pipeSpacing = 500;
                 x += pipeSpacing;
             }
         }
@@ -142,6 +144,9 @@ public class Game extends JFrame implements KeyListener, ActionListener {
                 g.drawString("Press SPACE to Restart", 270, 200);
                 g.drawString("Press ESC to Quit", 290, 250);
             }
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Arial", Font.PLAIN, 20));
+            g.drawString("Score: " + score, 20, 20);
         }
     }
     private void resetGame(){
